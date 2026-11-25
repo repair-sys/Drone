@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b2545">
+<title>ระบบแจ้งซ่อมโดรนและรถปฏิบัติการ</title>
+<style>
+  :root { color-scheme: light; }
+  html, body { margin: 0; padding: 0; height: 100%; background: #f4f6fb; }
+  body {
+    font-family: "IBM Plex Sans Thai", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    overflow: hidden;
+  }
+  #app {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
+    background: #ffffff;
+  }
+  #loading {
+    position: fixed;
+    inset: 0;
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    align-items: center;
+    justify-content: center;
+    background: #f4f6fb;
+    color: #475569;
+    font-size: 0.95rem;
+    transition: opacity 0.35s ease;
+  }
+  .spin {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: 3px solid #dbeafe;
+    border-top-color: #2563eb;
+    animation: sp 0.8s linear infinite;
+  }
+  @keyframes sp { to { transform: rotate(360deg); } }
+  #fallback {
+    display: none;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 6;
+    padding: 0.9rem 1rem;
+    text-align: center;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    background: #ffffff;
+    border-top: 1px solid #e2e8f0;
+    box-shadow: 0 -6px 20px rgba(15, 23, 42, 0.08);
+  }
+  #fallback a { color: #2563eb; font-weight: 600; }
+</style>
+</head>
+<body>
+
+<div id="loading">
+  <div class="spin"></div>
+  <div>กำลังโหลดระบบ…</div>
+</div>
+
+<iframe
+  id="app"
+  src="https://script.google.com/macros/s/AKfycbwtNqT01r7h1q1YTCc03FOnYOq32U2SeIi_EQ4LHJFw44dBAgoADiqWax2xxsh3GV_JTA/exec"
+  title="ระบบแจ้งซ่อมโดรนและรถปฏิบัติการ"
+  allow="clipboard-write; fullscreen"
+  referrerpolicy="no-referrer-when-downgrade"></iframe>
+
+<div id="fallback">
+  ถ้าหน้าจอว่างหรือโหลดไม่ขึ้น
+  <a href="https://script.google.com/macros/s/AKfycbwtNqT01r7h1q1YTCc03FOnYOq32U2SeIi_EQ4LHJFw44dBAgoADiqWax2xxsh3GV_JTA/exec" target="_blank" rel="noopener">เปิดแบบเต็มหน้า</a>
+</div>
+
+<script>
+(function () {
+  var frame = document.getElementById('app');
+  var loading = document.getElementById('loading');
+  var fallback = document.getElementById('fallback');
+  var done = false;
+
+  function hideLoading() {
+    if (done) { return; }
+    done = true;
+    loading.style.opacity = '0';
+    window.setTimeout(function () { loading.style.display = 'none'; }, 400);
+  }
+
+  frame.addEventListener('load', hideLoading);
+  /* ถ้าโหลดไม่ขึ้นภายใน 8 วินาที ให้โชว์ปุ่มเปิดแบบเต็มหน้าไว้ให้กด */
+  window.setTimeout(function () {
+    if (!done) { fallback.style.display = 'block'; }
+    hideLoading();
+  }, 8000);
+})();
+</script>
+
+</body>
+</html>
